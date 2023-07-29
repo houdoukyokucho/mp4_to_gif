@@ -1,0 +1,1 @@
+ubuntu -c pipenv run python main.py
