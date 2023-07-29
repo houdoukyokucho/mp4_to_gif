@@ -5,20 +5,23 @@ INPUT_DIR = "./videos"
 OUTPUT_DIR = "./gifs"
 
 
-def get_relative_file_paths(directory):
+def get_relative_file_paths(directory, allowed_extensions):
     """
-    指定されたディレクトリ内のすべてのファイルの相対パスを取得します。
+    指定されたディレクトリ内の特定の拡張子のファイルの相対パスを取得します。
 
     Parameters:
         directory (str): ファイルパスを取得する対象のディレクトリのパス。
+        allowed_extensions (list): 読み込みを許可する拡張子のリスト。
 
     Returns:
-        list: ディレクトリ内のすべてのファイルの相対パスのリスト。
+        list: ディレクトリ内の特定の拡張子のファイルの相対パスのリスト。
     """
     file_paths = []
     for root, _, files in os.walk(directory):
         for file in files:
-            file_paths.append(os.path.relpath(os.path.join(INPUT_DIR, root, file), directory))
+            _, ext = os.path.splitext(file)
+            if ext.lower() in allowed_extensions:
+                file_paths.append(os.path.relpath(os.path.join(INPUT_DIR, root, file), directory))
     return file_paths
 
 
@@ -37,7 +40,8 @@ def convert_video_to_gif(input_path, output_path):
 
 
 if __name__ == "__main__":
-    input_paths = get_relative_file_paths(INPUT_DIR)
+    allowed_extensions = [".mp4"]
+    input_paths = get_relative_file_paths(INPUT_DIR, allowed_extensions)
     output_paths = [OUTPUT_DIR + "/" + os.path.splitext(os.path.basename(path))[0] + ".gif" for path in input_paths]
     for input_path, output_path in zip(input_paths, output_paths):
         convert_video_to_gif(input_path, output_path)
