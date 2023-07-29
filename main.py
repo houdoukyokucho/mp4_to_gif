@@ -1,8 +1,8 @@
 import os
 from moviepy.editor import VideoFileClip
 
-INPUT_DIR = "./videos"
-OUTPUT_DIR = "./gifs"
+INPUT_DIR = "./mp4"
+OUTPUT_DIR = "./gif"
 
 
 def get_relative_file_paths(directory, allowed_extensions):
